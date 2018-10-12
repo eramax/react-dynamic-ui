@@ -7,15 +7,17 @@ export default class Layout extends React.Component {
     super(props);
     this.Callhandler = this.Callhandler.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
-    this.isOpenModal = this.isOpenModal.bind(this);
+    this.getVar = this.getVar.bind(this);
+    this.setVar = this.setVar.bind(this);
   }
   state = {
     Layout: {},
-    modal: false
+    modal: false,
+    vars: {}
   };
   componentDidMount() {
     if (this.state.Layout.lenth > 0) return;
-    axios.get("https://api.myjson.com/bins/1cs1dw").then(res => {
+    axios.get("http://localhost:52752/api/ui/Getx6").then(res => {
       let Layout = res.data;
       this.setState({ Layout });
     });
@@ -25,16 +27,28 @@ export default class Layout extends React.Component {
     alert("hello");
   };
 
-  toggleModal = () => {
+  toggleModal = (x) => {
+    var c = this.getVar(x)
+    c = !c
+    this.setVar(x,c)
+  };
+  getVar = x => {
+    //console.log("i will return :" )
+    //console.log( this.state.vars[x])
+    if(this.state.vars[x] != undefined )
+      return this.state.vars[x]
+  };
+  setVar = (x, y) => {
+    //console.log(x)
+    const vars = this.state.vars;
+    vars[x] = y;
     this.setState({
-      modal: !this.state.modal
+      vars: vars
     });
   };
-  isOpenModal = () => {
-    return this.state.modal;
-  };
-  Callhandler = method => {
-    //console.log(method)
+  Callhandler = (method,vars) => {
+    //console.log(method) 
+    //console.log(vars)
     switch (method) {
       case "UpdateLayout":
         this.changeLayout();
@@ -43,7 +57,7 @@ export default class Layout extends React.Component {
         this.alertx();
         break;
       case "toggleModal":
-        this.toggleModal();
+        this.toggleModal(vars);
         break;
       case "isOpenModal":
         this.isOpenModal();
@@ -56,6 +70,8 @@ export default class Layout extends React.Component {
         tag={this.state.Layout.Components}
         handler={this.Callhandler}
         modal={this.state.modal}
+        getVar={this.getVar}
+        setVar={this.setVar}
       />
     );
   }
