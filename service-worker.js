@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/reactstrap-dynamic-ui/precache-manifest.057bcf0698d4f9a3f91aeaa0601bc24a.js"
+  "/reactstrap-dynamic-ui/precache-manifest.282278b7f01a590669e7934df59e7e75.js"
 );
 
 workbox.clientsClaim();
