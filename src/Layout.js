@@ -12,12 +12,11 @@ export default class Layout extends React.Component {
   }
   state = {
     Layout: {},
-    modal: false,
     vars: {}
   };
   componentDidMount() {
     if (this.state.Layout.lenth > 0) return;
-    axios.get("http://localhost:52752/api/ui/Getx6").then(res => {
+    axios.get("https://api.myjson.com/bins/w91ms").then(res => {
       let Layout = res.data;
       this.setState({ Layout });
     });
@@ -69,7 +68,6 @@ export default class Layout extends React.Component {
       <Tag
         tag={this.state.Layout.Components}
         handler={this.Callhandler}
-        modal={this.state.modal}
         getVar={this.getVar}
         setVar={this.setVar}
       />
