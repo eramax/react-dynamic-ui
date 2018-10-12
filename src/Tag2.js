@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Container,
   Row,
@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter
-} from 'reactstrap';
+} from "reactstrap";
 const components = {
   Container: Container,
   Row: Row,
@@ -22,33 +22,39 @@ const components = {
   ModalFooter: ModalFooter
 };
 export default function Tag(props) {
-  const { tag, handler } = props;
+  const { tag, handler, modal } = props;
 
-  if (typeof tag === 'undefined' || typeof tag['Type'] === 'undefined')
-    return <p>Loading....</p>;
-  var caller = undefined;
-  if (
-    typeof tag['Props']['ClickAction'] != 'undefined' &&
-    tag['Props']['ClickAction'] != null
-  ) {
-    var toCall = tag['Props']['ClickAction'];
-    caller = () => handler(toCall);
-    delete tag['Props']['ClickAction'];
+  if (typeof tag === "undefined" || !("Type" in tag) )return <p>Loading....</p>;
+
+  if (!IsFunc(tag["Props"]["onClick"])  && "onClick" in tag["Props"]) {
+    var toCall = tag["Props"]["onClick"];
+    tag["Props"]["onClick"] = () => handler(toCall);
+  }
+
+  if (!IsFunc(tag["Props"]["toggle"])  &&  "toggle" in tag["Props"]) {
+    var toCall = tag["Props"]["toggle"];
+    tag["Props"]["toggle"] = () => handler("toggleModal");
+  }
+
+  if ("isOpen" in tag["Props"]) {
+    tag["Props"]["isOpen"] = modal;
   }
 
   var tggg;
-
   tggg = React.createElement(
-    components[tag['Type']] || tag['Type'],
+    components[tag["Type"]] || tag["Type"],
     {
-      className: tag['Props']['className'],
-      onClick: caller,
-      ...tag['Props']
+      className: tag["Props"]["className"],
+      ...tag["Props"]
     },
-    tag['Content'],
-    tag['Childerns'].map(item => (
-      <Tag key={Math.random()} tag={item} handler={handler} />
+    tag["Content"],
+    tag["Childerns"].map(item => (
+      <Tag key={Math.random()} tag={item} handler={handler} modal={modal} />
     ))
   );
   return <React.Fragment>{tggg}</React.Fragment>;
 }
+
+var IsFunc = x => {
+  return typeof x === "function";
+};
