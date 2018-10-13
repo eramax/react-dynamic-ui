@@ -16,7 +16,7 @@ export default class Layout extends React.Component {
   };
   componentDidMount() {
     if (this.state.Layout.lenth > 0) return;
-    axios.get("https://api.myjson.com/bins/w91ms").then(res => {
+    axios.get("https://api.myjson.com/bins/hnxb8").then(res => {
       let Layout = res.data;
       this.setState({ Layout });
     });

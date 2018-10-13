@@ -8,7 +8,9 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  ListGroup,
+  ListGroupItem
 } from "reactstrap";
 
 const components = {
@@ -20,7 +22,9 @@ const components = {
   Modal: Modal,
   ModalHeader: ModalHeader,
   ModalBody: ModalBody,
-  ModalFooter: ModalFooter
+  ModalFooter: ModalFooter,
+  ListGroup: ListGroup,
+  ListGroupItem: ListGroupItem
 };
 export default function Tag(props) {
   const { tag, handler, modal, getVar, setVar } = props;
@@ -30,14 +34,13 @@ export default function Tag(props) {
   if ("onClick" in tag["Props"] && !IsFunc(tag["Props"]["onClick"])) {
     var toCall1 = tag["Props"]["onClick"]["function"];
     var varCall1 = tag["Props"]["onClick"]["vars"];
-    tag["Props"]["onClick"] = () =>
-      handler(toCall1, varCall1);
+    tag["Props"]["onClick"] = () => handler(toCall1, varCall1);
   }
 
   if ("toggle" in tag["Props"] && !IsFunc(tag["Props"]["toggle"])) {
     var toCall2 = tag["Props"]["toggle"]["function"];
     var varCall2 = tag["Props"]["toggle"]["vars"];
-    tag["Props"]["toggle"] = () => handler(toCall1 ,varCall2 );
+    tag["Props"]["toggle"] = () => handler(toCall1, varCall2);
   }
 
   if ("Vars" in tag) {
@@ -47,8 +50,8 @@ export default function Tag(props) {
     delete tag["Vars"];
   }
 
-  if (tag['Props']['isOpen'] !== undefined) {
-    tag["Props"]["isOpen"] = getVar(tag['id'])
+  if (tag["Props"]["isOpen"] !== undefined) {
+    tag["Props"]["isOpen"] = getVar(tag["id"]);
   }
 
   var tggg;
@@ -76,5 +79,5 @@ var IsFunc = x => {
   return typeof x === "function";
 };
 var IsArray = x => {
-  return x.constructor === Array
+  return x.constructor === Array;
 };
