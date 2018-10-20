@@ -46,14 +46,17 @@ export default class Layout extends React.Component {
     });
   };
   Callhandler = (method, vars) => {
-    console.log(method);
-    console.log(vars);
+    //console.log(method);
+    //console.log(vars);
     switch (method) {
       case "UpdateLayout":
         this.changeLayout();
         break;
       case "alertx":
         this.alertx();
+        break;
+      case "handlerTest":
+        console.log("Handler Test")
         break;
       case "toggleModal":
         this.toggleModal(vars);

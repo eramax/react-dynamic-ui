@@ -42,7 +42,12 @@ export default function Tag(props) {
     else tag["Props"]["className"] = tag["Props"]["className"].replace("is-active","");
   }
 
-  var tggg;
+  if(tag["Type"] === "ERoutes")
+  {
+    tag["Props"]["handler"] = handler
+  }
+
+  let tggg;
   tggg = React.createElement(
     components[tag["Type"]] || tag["Type"],
     {

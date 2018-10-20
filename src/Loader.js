@@ -19,6 +19,7 @@ export default class Loader extends React.Component {
   render() {
     //console.log("loader");
     //console.log(this.props);
+    //this.props.handler("handlerTest")
     return <Tag tag={this.state.data} />
   }
 }

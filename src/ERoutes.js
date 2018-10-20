@@ -7,7 +7,7 @@ export default function ERoutes(props) {
   return (
     <React.Fragment>
       {props["Routes"].map(element => {
-        return <Route exact render={() => <Loader item={element} /> } key={element['action']} path={element["link"]}  />;
+        return <Route exact render={() => <Loader item={element} handler={props['handler']} /> } key={element['action']} path={element["link"]}  />;
       })}
     </React.Fragment>
   );
