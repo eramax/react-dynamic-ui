@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Tag from "./Tag2";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 export default class Layout extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class Layout extends React.Component {
   };
   componentDidMount() {
     if (this.state.Layout.lenth > 0) return;
-    axios.get("https://api.myjson.com/bins/hnxb8").then(res => {
+    axios.get("https://api.myjson.com/bins/1cvwco").then(res => {
       let Layout = res.data;
       this.setState({ Layout });
     });
@@ -26,16 +27,15 @@ export default class Layout extends React.Component {
     alert("hello");
   };
 
-  toggleModal = (x) => {
-    var c = this.getVar(x)
-    c = !c
-    this.setVar(x,c)
+  toggleModal = x => {
+    var c = this.getVar(x);
+    c = !c;
+    this.setVar(x, c);
   };
   getVar = x => {
     //console.log("i will return :" )
     //console.log( this.state.vars[x])
-    if(this.state.vars[x] != undefined )
-      return this.state.vars[x]
+    if (this.state.vars[x] !== undefined) return this.state.vars[x];
   };
   setVar = (x, y) => {
     //console.log(x)
@@ -45,9 +45,9 @@ export default class Layout extends React.Component {
       vars: vars
     });
   };
-  Callhandler = (method,vars) => {
-    //console.log(method) 
-    //console.log(vars)
+  Callhandler = (method, vars) => {
+    console.log(method);
+    console.log(vars);
     switch (method) {
       case "UpdateLayout":
         this.changeLayout();
@@ -61,16 +61,22 @@ export default class Layout extends React.Component {
       case "isOpenModal":
         this.isOpenModal();
         break;
+      case "isActiveToggle":
+        this.toggleModal(vars);
+        break;
+      default:
     }
   };
   render() {
     return (
-      <Tag
-        tag={this.state.Layout.Components}
-        handler={this.Callhandler}
-        getVar={this.getVar}
-        setVar={this.setVar}
-      />
+      <Router>
+        <Tag
+          tag={this.state.Layout.Components}
+          handler={this.Callhandler}
+          getVar={this.getVar}
+          setVar={this.setVar}
+        />
+      </Router>
     );
   }
 }

@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Layout from "./Layout";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "./styles.css";
+//import "./styles.css";
+import "./syle2.sass"
 
 function App() {
   return <Layout />;

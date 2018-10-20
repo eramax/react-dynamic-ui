@@ -1,35 +1,16 @@
 import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Alert,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ListGroup,
-  ListGroupItem
-} from "reactstrap";
+import Img from './Img';
+import { NavLink  } from "react-router-dom";
 
 const components = {
-  Container: Container,
-  Row: Row,
-  Col: Col,
-  Alert: Alert,
-  Button: Button,
-  Modal: Modal,
-  ModalHeader: ModalHeader,
-  ModalBody: ModalBody,
-  ModalFooter: ModalFooter,
-  ListGroup: ListGroup,
-  ListGroupItem: ListGroupItem
+  Img: Img,
+  NavLink: NavLink
 };
-export default function Tag(props) {
-  const { tag, handler, modal, getVar, setVar } = props;
 
-  if (typeof tag === "undefined" || !("Type" in tag)) return <p>Loading....</p>;
+export default function Tag(props) {
+  const { tag, handler, getVar, setVar } = props;
+
+  if (typeof tag === "undefined" || tag === null || !("Type" in tag)) return <p className="is-loading">Loading....</p>;
 
   if ("onClick" in tag["Props"] && !IsFunc(tag["Props"]["onClick"])) {
     var toCall1 = tag["Props"]["onClick"]["function"];
@@ -40,7 +21,7 @@ export default function Tag(props) {
   if ("toggle" in tag["Props"] && !IsFunc(tag["Props"]["toggle"])) {
     var toCall2 = tag["Props"]["toggle"]["function"];
     var varCall2 = tag["Props"]["toggle"]["vars"];
-    tag["Props"]["toggle"] = () => handler(toCall1, varCall2);
+    tag["Props"]["toggle"] = () => handler(toCall2, varCall2);
   }
 
   if ("Vars" in tag) {
@@ -54,17 +35,23 @@ export default function Tag(props) {
     tag["Props"]["isOpen"] = getVar(tag["id"]);
   }
 
+  if (tag["Props"]["is-active"] !== undefined ) {
+    console.log(tag["Props"]["className"])
+    let v = getVar(tag["Props"]["is-active"]['vars'][0])
+    if(v === true) tag["Props"]["className"] += " is-active";
+    else tag["Props"]["className"] = tag["Props"]["className"].replace("is-active","");
+  }
+
   var tggg;
   tggg = React.createElement(
     components[tag["Type"]] || tag["Type"],
     {
-      className: tag["Props"]["className"],
       ...tag["Props"]
     },
     tag["Content"],
     tag["Childerns"].map(item => (
       <Tag
-        key={Math.random()}
+        key={item['Key']}
         tag={item}
         handler={handler}
         getVar={getVar}
@@ -78,6 +65,7 @@ export default function Tag(props) {
 var IsFunc = x => {
   return typeof x === "function";
 };
-var IsArray = x => {
+/*var IsArray = x => {
   return x.constructor === Array;
 };
+*/
