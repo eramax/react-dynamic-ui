@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Tag from "./Tag2";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 export default class Layout extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export default class Layout extends React.Component {
   };
   componentDidMount() {
     if (this.state.Layout.lenth > 0) return;
-    axios.get("https://api.myjson.com/bins/1cvwco").then(res => {
+    axios.get("https://api.myjson.com/bins/13z1fc").then(res => {
       let Layout = res.data;
       this.setState({ Layout });
     });
@@ -62,6 +62,9 @@ export default class Layout extends React.Component {
         this.isOpenModal();
         break;
       case "isActiveToggle":
+        this.toggleModal(vars);
+        break;
+      case "getRoute":
         this.toggleModal(vars);
         break;
       default:

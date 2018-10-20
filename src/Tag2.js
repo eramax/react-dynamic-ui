@@ -1,10 +1,11 @@
 import React from "react";
 import Img from './Img';
 import { NavLink  } from "react-router-dom";
-
+import ERoutes from './ERoutes';
 const components = {
   Img: Img,
-  NavLink: NavLink
+  NavLink: NavLink,
+  ERoutes: ERoutes
 };
 
 export default function Tag(props) {
@@ -36,7 +37,6 @@ export default function Tag(props) {
   }
 
   if (tag["Props"]["is-active"] !== undefined ) {
-    console.log(tag["Props"]["className"])
     let v = getVar(tag["Props"]["is-active"]['vars'][0])
     if(v === true) tag["Props"]["className"] += " is-active";
     else tag["Props"]["className"] = tag["Props"]["className"].replace("is-active","");
