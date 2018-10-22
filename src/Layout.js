@@ -6,82 +6,70 @@ import { BrowserRouter as Router } from "react-router-dom";
 export default class Layout extends React.Component {
   constructor(props) {
     super(props);
-    this.Callhandler = this.Callhandler.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
-    this.getVar = this.getVar.bind(this);
-    this.setVar = this.setVar.bind(this);
+    this.handler = this.handler.bind(this);
   }
   state = {
     Layout: {},
     vars: {}
   };
+
   componentDidMount() {
     if (this.state.Layout.lenth > 0) return;
-    axios.get("https://api.myjson.com/bins/c1t5k").then(res => {
+    axios.get("https://api.myjson.com/bins/18y16c").then(res => {
       let Layout = res.data;
       this.setState({ Layout });
     });
   }
-  changeLayout = () => {};
-  alertx = () => {
-    alert("hello");
-  };
 
-  toggleModal = x => {
-    var c = this.getVar(x);
+  toggle = x => {
+    let c = this.getVar(x);
     c = !c;
-    this.setVar(x, c);
+    let c2 = { key: x, val: c };
+    this.setVar(c2);
   };
   getVar = x => {
-    //console.log("i will return :" )
-    //console.log( this.state.vars[x])
-    if (this.state.vars[x] !== undefined) return this.state.vars[x];
-  };
-  setVar = (x, y) => {
     //console.log(x)
-    const vars = this.state.vars;
-    vars[x] = y;
+    if (this.state.vars[x] !== undefined) return this.state.vars[x];
+    else return null;
+  };
+  setVar = x => {
+    let vars = this.state.vars;
+    vars[x.key] = x.val;
     this.setState({
       vars: vars
     });
   };
-  Callhandler = (method, vars) => {
-    //console.log(method);
-    //console.log(vars);
-    switch (method) {
-      case "UpdateLayout":
-        this.changeLayout();
-        break;
-      case "alertx":
-        this.alertx();
-        break;
-      case "handlerTest":
-        console.log("Handler Test")
-        break;
-      case "toggleModal":
-        this.toggleModal(vars);
-        break;
-      case "isOpenModal":
-        this.isOpenModal();
-        break;
-      case "isActiveToggle":
-        this.toggleModal(vars);
-        break;
-      case "getRoute":
-        this.toggleModal(vars);
-        break;
-      default:
-    }
+
+  Increment = x => {
+    let c = this.getVar(x);
+    let c2 = { key: x, val: ++c };
+    this.setVar(c2);
+  };
+
+  StringFormat = x => {
+    let str = x[0];
+    x.forEach((item, index) => {
+      if (index > 0 && item !== undefined)
+        str = str.replace(`{${index - 1}}`, this.getVar(item));
+    });
+    return str;
+  };
+
+  Methods = {
+    getVar: this.getVar,
+    setVar: this.setVar,
+    toggle: this.toggle,
+    alertx: this.alertx,
+    IncrementF: this.Increment,
+    StringFormat: this.StringFormat
+  };
+  handler = (method, vars) => {
+    if (method in this.Methods) return this.Methods[method](vars);
   };
   render() {
     return (
       <Router>
-        <Tag
-          tag={this.state.Layout.Components}
-          handler={this.Callhandler}
-          getVar={this.getVar}
-          setVar={this.setVar}
-        />
+        <Tag tag={this.state.Layout.Components} handler={this.handler} />
       </Router>
     );
   }
